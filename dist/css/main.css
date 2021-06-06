@@ -1,0 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background: #3d025f;
+    height: 100vh;
+}
+
+p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}
+
+h1, h2, h3, h4 {
+    color: #fff;
+}
+
+.main-content {
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    text-align: center;
+}
+
+.main-content .search {
+    width: 70px;
+    height: 40px;
+    margin: 0 auto;
+    position: relative;
+    transition: width 0.2s ease-in-out;
+}
+
+.main-content .search.active {
+    width: 400px;
+}
+
+.main-content .search .search-location {
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 50px;
+    opacity: 0;
+}
+
+.main-content .search .search-location.active {
+    opacity: 1;
+}
+
+.main-content .search .search-btn {
+    background: #fff;
+    border-radius: 50%;
+    width: 40px;
+    color: #3d025f;
+    padding: 8px 10px;
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.main-content .search .search-btn.active {
+    background: #3d025f;
+    color: #fff;
+    padding: 8px;
+}
+
+.main-content .search .close-btn {
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    cursor: pointer;
+    transform: rotate(360deg);
+    transition: right 0.2s ease-in-out, transform 0.5s ;
+}
+
+.main-content .search .close-btn.active {
+    right: -40px;
+}
+
+.main-content .location  {
+    margin: 20px 0 10px;
+}
+
+/*--------------------------------------------------*/
+
+.showcase-container .temp-content {
+    padding: 10px 30px;
+    display: flex;
+    color: #fff;
+}
+
+.showcase-container .current-main-temp {
+    padding: 10px 30px;
+    color: #fff;
+    font-size: 80px;
+}
+
+.showcase-container .temp-content .current-weather-icon {
+    padding: 20px;
+    text-align: center;
+}
+
+.showcase-container .temp-content .current-weather-icon i {
+    margin: 20px 0;
+}
+
+.showcase-container .temp-content .temp-convert {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.showcase-container .temp-content .temp-convert h4 {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.showcase-container .temp-content .temp-convert h4.active {
+    background: #8a2dbd;
+}
+
+.showcase-container .update-time {
+    font-size: 14px;
+}
+
+.main-content .showcase-container .description,
+.main-content .showcase-container .update-time {
+    margin: 5px;
+    padding: 5px;
+}
+
+/****** Daily forecast ********/
+
+#daily-forecast .daily-temp-container{
+    display: grid;
+    padding: 10px 60px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 6rem;
+}
+
+.forecast-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.forecast-card p {
+    text-align: left;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+}
+
+.forecast-card .min-max {
+    display: flex;
+    margin-top: 0.8rem;
+}
+
+.forecast-card .min-temp {
+    padding: 5px 10px;
+    color: #f5f5f5
+}
