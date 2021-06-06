@@ -1,4 +1,4 @@
-import abc from './abc';
+import { a } from './abc.js';
 
 const search = document.querySelector('.search');
 const searchBtn = document.querySelector('.search-btn');
@@ -11,7 +11,8 @@ searchBtn.addEventListener('click', ev => {
     searchInput.classList.add('active');
     searchBtn.classList.add('active');
     closeBtn.classList.add('active');
-    abc();
+    console.log('a')
+    a();
 })
 
 closeBtn.addEventListener('click', ev => {
