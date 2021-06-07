@@ -11,6 +11,10 @@ body {
     height: 100vh;
 }
 
+ul {
+    list-style: none;
+}
+
 p {
     color: #fff;
     font-size: 14px;
@@ -27,6 +31,7 @@ h1, h2, h3, h4 {
     margin: 0 auto;
     padding: 20px 40px;
     text-align: center;
+    position: relative;
 }
 
 .main-content .search {
@@ -35,6 +40,7 @@ h1, h2, h3, h4 {
     margin: 0 auto;
     position: relative;
     transition: width 0.2s ease-in-out;
+    
 }
 
 .main-content .search.active {
@@ -84,6 +90,26 @@ h1, h2, h3, h4 {
 
 .main-content .search .close-btn.active {
     right: -40px;
+}
+
+.main-content .location-list {
+    width: 400px;
+    top: 64px;
+    left: 50px;
+    border-radius: 10px;
+    background: #8a2dbd;
+    position: absolute;
+    z-index: 1;
+}
+
+.main-content .location-list .location-item {
+    padding: 1rem 0;  
+    border-bottom: 1px solid #fff; 
+    color: #fff;
+}
+
+.main-content .location-list .location-item:last-child {
+    border-bottom: none;
 }
 
 .main-content .location  {

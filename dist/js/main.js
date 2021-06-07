@@ -1,21 +1,27 @@
+import { init } from './viewCtrl.js';
+import { DOMStrings } from './DOMStrings.js';
+import { AutoComplete } from './dataCtrl.js';
 
-const search = document.querySelector('.search');
-const searchBtn = document.querySelector('.search-btn');
-const closeBtn = document.querySelector('.close-btn');
-const searchInput = document.querySelector('.search-location');
+let state = { locAutoComplete : [] }
 
+let key = 'i1G2ZaaeVIVDziiEEDwAMQSjcIBC9iTs';
+const url = 'http://dataservice.accuweather.com/locations/v1/cities/autocomplete';
 
-searchBtn.addEventListener('click', ev => {
-    search.classList.add('active');
-    searchInput.classList.add('active');
-    searchBtn.classList.add('active');
-    closeBtn.classList.add('active');
-    console.log('a')
-})
+const autoComplete = async () => {
+    const inputValue = document.querySelector(DOMStrings.input).value;
+    if(inputValue) {
+        let response = await fetch(`${url}?apikey=${key}&q=${inputValue}`)
+        let result = await response.json();
+        console.log(result);
+        state.locAutoComplete = [];
+        result.forEach(el => {
+            const name = el.LocalizedName;
+            const country = el.Country.LocalizedName;
+            state.locAutoComplete.push(new AutoComplete(name, country));
+        });
+    }
+}
 
-closeBtn.addEventListener('click', ev => {
-    search.classList.remove('active');
-    searchInput.classList.remove('active');
-    searchBtn.classList.remove('active');
-    closeBtn.classList.remove('active');
-})
+document.addEventListener('keyup', autoComplete);
+
+window.addEventListener('DOMContentLoaded', init);
