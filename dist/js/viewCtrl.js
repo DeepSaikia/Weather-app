@@ -1,4 +1,12 @@
+import { DOMStrings } from './DOMStrings.js';
 
+export const autoCompListRender = (loc) => {
+    let html = '';
+    loc.forEach(el => {
+        html += `<li class="location-item">${el.getLocName()}, ${el.getCountryName()}</li>`;
+    });
+    document.querySelector(DOMStrings.locationList).innerHTML = html;
+}
 
 const search = document.querySelector('.search');
 const searchBtn = document.querySelector('.search-btn');

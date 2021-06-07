@@ -7,7 +7,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    background: #3d025f;
+    background: #615756;
     height: 100vh;
 }
 
@@ -60,10 +60,10 @@ h1, h2, h3, h4 {
 }
 
 .main-content .search .search-btn {
-    background: #fff;
+    background: #52FFB8;
     border-radius: 50%;
     width: 40px;
-    color: #3d025f;
+    color: #539987;
     padding: 8px 10px;
     position: absolute;
     top: 2px;
@@ -106,10 +106,16 @@ h1, h2, h3, h4 {
     padding: 1rem 0;  
     border-bottom: 1px solid #fff; 
     color: #fff;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 .main-content .location-list .location-item:last-child {
     border-bottom: none;
+}
+
+.main-content .location-list .location-item:hover {
+    background: #539987;
 }
 
 .main-content .location  {
