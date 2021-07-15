@@ -6,161 +6,226 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" media="screen and (max-width: 1200px)" href="./css/mobile.css">
     <title>Weather</title>
 </head>
 <body>
-    <header class="main-content">
-        <div class="search">
-            <input type="text" class="search-location" placeholder="Search" autocomplete=""/>
-            <div class="search-btn"><i class="fas fa-search"></i></div>
-            <div class="close-btn"><i class="fas fa-times"></i></div>
-        </div>
-        <ul class="location-list">
-            <!-- <li class="location-item">Delhi, India</li>
-            <li class="location-item">Delhi, India</li>
-            <li class="location-item">Delhi, India</li>
-            <li class="location-item">Delhi, India</li>
-            <li class="location-item">Delhi, India</li> -->
-        </ul>
-        <h4 class="location">New Delhi, India</h4>
-        <div class="showcase-container">
-           <div class="temp-content">
-               <div class="current-weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-3x"></i>
-               </div>
-               <h1 class="current-main-temp">10<span>&#176;</span></h1>
-               <div class="temp-convert">
-                   <h4 class="celsius">C</h4>
-                   <h4 class="fahrenheit active">F</h4>
-               </div>
-           </div>
-           <p class="description">Sunny</p> 
-           <p class="update-time">Updated as of ......... </p>
-        </div>
-    </header>
+    <main class="main">
+        <div class="overlay-transition"></div>
+        <header id="header">
+            <form class="search">
+                <input type="text" id="large-view" class="search-location" placeholder="" autocomplete="off"/>
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </form>
+            <ul id="large-view-list" class="location-list">
+                <!-- <li class="location-item"><p>Delhi, India</p></li>
+                <li class="location-item"><p>Delhi, India</p></li>
+                <li class="location-item"><p>Delhi, India</p></li>
+                <li class="location-item"><p>Delhi, India</p></li> -->
+            </ul>
+            
+            <div class="main-content">
+                <h4 class="location">New Delhi, India</h4>
+                <div class="showcase-container">
+                    <div class="temp-content">
+                        <div class="current-weather-icon">
+                            <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                        </div>
+                        <h1 class="current-main-temp">10&#176;</h1>
+                        <div class="temp-unit">
+                            <h4 class="celsius active" id="unit-1">C</h4>
+                            <h4 class="fahrenheit" id="unit-2">F</h4>
+                        </div>
+                    </div>
+                    <h3 class="description">Sunny</h3> 
+                    <p class="update-time">Updated as of ......... </p>
+                </div>
+            </div>
+        </header>
 
-    <section id="daily-forecast">
-        <div class="daily-temp-container">
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
+        <section id="daily-forecast">
+            <div class="container">
+                <h4 class="forecast-title">Daily</h4>
+                <div class="temp-forecasts">
+                    <div id="daily-scroll-btns" class="scroll-btns inactive">
+                        <span id="right" class="right-scroll scroll-btn"><i class="fas fa-chevron-right"></i></span>
+                        <span id="left" class="left-scroll scroll-btn"><i class="fas fa-chevron-left"></i></span>
+                    </div>
+                    <div class="forecast-container daily-temp-container active">
+                        <div class="daily forecast-card today">
+                            <p class="date">Wed 26</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <div class="daily-temp min-max min-max">
+                                <h1 class="max-temp">39<span>&#176;</span></h1>
+                                <h4 class="min-temp">24<span>&#176;</span></h4>
+                            </div>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="daily forecast-card">
+                            <p class="date">Wed 26</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <div class="daily-temp min-max min-max">
+                                <h1 class="max-temp">39<span>&#176;</span></h1>
+                                <h4 class="min-temp">24<span>&#176;</span></h4>
+                            </div>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="daily forecast-card">
+                            <p class="date">Wed 26</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <div class="daily-temp min-max">
+                                <h1 class="max-temp">39<span>&#176;</span></h1>
+                                <h4 class="min-temp">24<span>&#176;</span></h4>
+                            </div>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="daily forecast-card">
+                            <p class="date">Wed 26</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <div class="daily-temp min-max">
+                                <h1 class="max-temp">39<span>&#176;</span></h1>
+                                <h4 class="min-temp">24<span>&#176;</span></h4>
+                            </div>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="daily forecast-card">
+                            <p class="date">Wed 26</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <div class="daily-temp min-max">
+                                <h1 class="max-temp">39<span>&#176;</span></h1>
+                                <h4 class="min-temp">24<span>&#176;</span></h4>
+                            </div>
+                            <p class="description">Sunny</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="daily-temp min-max min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
             </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="daily-forecast">
-        <div class="daily-temp-container">
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-            <div class="daily forecast-card">
-                <p class="date">Wed 26</p>
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-moon-rain fa-2x"></i>
-                </div>
-                <div class="daily-temp min-max">
-                    <h1 class="max-temp">39<span>&#176;</span></h1>
-                    <h4 class="min-temp">24<span>&#176;</span></h4>
-                </div>
-                <p class="description">Sunny</p>
-            </div>
-        </div>
-    </section>
 
+        <section id="hourly-forecast">
+            <div class="container">
+                <h4 class="forecast-title">Hourly</h4>
+                <div class="temp-forecasts">
+                    <div id="hourly-scroll-btns" class="scroll-btns active">
+                        <span id="right" class="right-scroll scroll-btn"><i class="fas fa-chevron-right"></i></span>
+                        <span id="left" class="left-scroll scroll-btn"><i class="fas fa-chevron-left"></i></span>
+                    </div>
+                    <div class="forecast-container hourly-temp-container active">
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                        <div class="hourly forecast-card">
+                            <p class="date">04:00</p>
+                            <div class="weather-icon">
+                                <i class="fas fa-cloud-moon-rain fa-2x"></i>
+                            </div>
+                            <h1 class="max-temp">39<span>&#176;</span></h1>
+                            <p class="description">Sunny</p>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </section>
+
+        <div class="side-menu">
+            <div class="side-search">
+                <input type="text" id="mobile-view" class="search-location" placeholder="" autocomplete="off"/>
+                <button class="side-search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <ul id="mobile-view-list" class="mobile-location-list location-list">
+                <!-- <li class="location-item"><i class="fas fa-map-marker-alt"></i><p>Delhi, India</p></li>
+                <li class="location-item"><i class="fas fa-map-marker-alt"></i><p>Delhi, India</p></li>
+                <li class="location-item"><i class="fas fa-map-marker-alt"></i><p>Delhi, India</p></li>
+                <li class="location-item"><i class="fas fa-map-marker-alt"></i><p>Delhi, India</p></li> -->
+            </ul>
+            <!-- <div class="close-btn"> 
+                <i class="far fa-times-circle fa-2x"></i>
+            </div> -->
+        </div>
+
+    </main>
 </body>
 <script src="js/main.js" type="module"></script>
 </html>
