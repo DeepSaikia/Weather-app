@@ -35,7 +35,7 @@ export const currentMainTempRender = (temp) => {
 
 export const currentLocationRender = (location) => {
     console.log(location)
-    location = window.innerWidth;
+    location = `${window.innerWidth}x${window.innerHeight}`;
     document.querySelector(DOMStrings.location).innerHTML = location;
 }
 
