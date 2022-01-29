@@ -5,8 +5,9 @@ const { WEATHER_API_KEY3 } = process.env;
 
 
 exports.handler = async(event, context) => {
-    const params = JSON.parse(event.body);
+    const params = JSON.parse(event.body)
     const { url, q } = params;
+    console.log(q)
     const api = `${url}?apikey=${WEATHER_API_KEY3}&q=${q}`;
     try {
         const response = await fetch(api);
@@ -15,7 +16,7 @@ exports.handler = async(event, context) => {
             statusCode: 200,
             body: JSON.stringify(result)
         };
-    }
+    }    
     catch(err) {
         return {
             statusCode: 422,

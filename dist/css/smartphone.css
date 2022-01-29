@@ -1,0 +1,92 @@
+@media only screen and (max-width: 500px) {
+
+    #header .search {
+        right: 30px;
+    }
+    
+    /* .container {
+
+    } */
+
+    .main-content {
+        max-width: 200px;
+        margin: 0;
+        padding: 20px 10px;
+    }
+
+    .main-content .temp-content {
+        padding: 10px;
+        grid-gap: 0.1rem;
+        overflow: hidden;
+    } 
+
+    .main-content .location {
+        font-size: 14px;
+        text-align: left;
+        padding: 0 25px;
+        color: #fff;
+    }
+
+    .main-content .current-weather-icon {
+        display: none;
+    }
+
+    .main-content .current-main-temp {
+        font-size: 70px;
+        padding: 10px;
+    }
+
+    .showcase-container .temp-content .temp-unit {
+        padding: 5px;
+    }
+
+    .main-content .showcase-container .description,
+    .main-content .showcase-container .update-time {
+        font-size: 15px;
+        margin: 0;
+        padding: 0 25px;
+        text-align: left;
+    }
+
+    .main-content .showcase-container .update-time {
+        font-size: 12px;
+        margin: 10px 0 40px;
+    }
+
+    #daily-forecast,
+    #hourly-forecast {
+        height: 200px;
+        /* overflow: hidden; */
+        /* margin-bottom: 20px; */
+    }
+    
+    .forecast-title {
+        margin: 10px;
+        font-size: 14px;
+    }
+
+    #daily-forecast .forecast-container,
+    #hourly-forecast .forecast-container {
+        grid-gap: 0.2rem;
+        padding: 10px;
+    }
+
+    #daily-forecast .forecast-container .date,
+    #hourly-forecast .forecast-container .date {
+        font-size: 14px;
+    }
+
+    #daily-forecast .forecast-container .max-temp,
+    #hourly-forecast .forecast-container .max-temp {
+        font-size: 20px;
+    }
+
+    #daily-forecast .forecast-container .min-temp,
+    #hourly-forecast .forecast-container .min-temp {
+        font-size: 15px;
+    }
+
+    #hourly-forecast .forecast-container .forecast-card {
+        /* padding: 5px 10px; */
+    }
+}
