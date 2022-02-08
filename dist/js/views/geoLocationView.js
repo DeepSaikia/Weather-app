@@ -1,12 +1,12 @@
 import { DOMStrings } from "../DOMStrings.js"
 
-export const renderGeoLocationLoader = () => {
+export const renderGeoLocationModal = () => {
     const geoLocation = document.querySelector(DOMStrings.geoLocation)
     geoLocation.classList.add('active')
     geoLocation.querySelector(DOMStrings.geoLocationIcon).innerHTML = `<div class="loader"></div>`;
 }
 
-export const clearGeoLocationLoader = () => {
+export const shrinkGeoLocationModal = () => {
     const geoLocation = document.querySelector(DOMStrings.geoLocation)
     geoLocation.classList.remove('active')
 }

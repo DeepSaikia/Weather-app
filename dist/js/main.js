@@ -18,6 +18,7 @@ let state = {
     location : '',
     unitType : '', 
     isDay : true,
+    searchTimerID : 0,
     currWeatherForBackground : 0,
     hourlyHorizontalScroll : {
         scrollCount : 0,
@@ -44,24 +45,33 @@ let state = {
     },
     setTouchMoveX : function(value) {
         this.touchMoveX = value;
+    },
+    getSearchTimerID : function() {
+        return this.searchTimerID
+    },
+    setSearchTimerID : function(ID) {
+        this.searchTimerID = ID;
     }
 }
 
 const geoLocationControl = async () => {
-    geoLocationView.renderGeoLocationLoader();
+    mainView.renderMainOverlay()
+    geoLocationView.renderGeoLocationModal();
     state.geoLocation = new geoLocation()
     try{
         await state.geoLocation.getWeatherForecast();
         mainView.selectedLocationRender(state.geoLocation.location)
         fetchHourlyForecast(state.geoLocation.locKey)
-        console.log(state.geoLocation.errorMsg)
+        // console.log(state.geoLocation.errorMsg)
         if(state.geoLocation.errorMsg.message){
             geoLocationView.renderErrorGeoLocation(state.geoLocation.errorMsg.message)
-            return setTimeout(() => {
-                geoLocationView.clearGeoLocationLoader();
+            setTimeout(() => {
+                geoLocationView.shrinkGeoLocationModal();
             }, 3000);
+            return mainView.removeMainOverlay()
         }
-        geoLocationView.clearGeoLocationLoader();
+        geoLocationView.shrinkGeoLocationModal();
+        mainView.removeMainOverlay()
     }
     catch(err){
         console.log(err)
@@ -94,6 +104,7 @@ const autoComplete = async (ev) => {
 
 const fetchSelectedLocationFromDOM = (e) => {
     const li = e.target.closest(DOMStrings.locationListItem);
+    console.log(li)
     if(li){                                     //better implmentation for in-between list click
         const key = li.id;
         state.location = e.target.textContent;
@@ -107,7 +118,13 @@ const fetchSelectedLocationFromDOM = (e) => {
 }
 
 //Input event listener 
-document.querySelectorAll(DOMStrings.input).forEach(el => el.addEventListener('keyup', autoComplete))
+document.querySelectorAll(DOMStrings.input).forEach(el => el.addEventListener('keyup', (ev) => {
+    clearTimeout(state.getSearchTimerID())
+    const searchTimerID = setTimeout(() => {
+        autoComplete(ev)
+    }, 1000);    
+    state.setSearchTimerID(searchTimerID);
+}))
 
 //On place selection from the list 
 document.querySelectorAll(DOMStrings.locationList).forEach(el => el.addEventListener('click', fetchSelectedLocationFromDOM));
@@ -171,7 +188,7 @@ const fetchHourlyForecast = async(locKey) => {
             console.log('from hourly')
             hourlyView.clearHourlyLoader()
             hourlyView.hourlyForecastRender(state.hourlyForecasts.result);
-            viewCtrl.unitTogglerRender(state.isDay)  //wth is this????
+            mainView.unitTogglerRender(state.hourlyForecasts.isDay)  
             state.hourlyHorizontalScroll.itemClientWidth = hourlyView.gethourlyItemClientWidth()
         }
         catch(err){

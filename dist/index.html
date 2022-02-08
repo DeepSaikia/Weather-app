@@ -15,14 +15,17 @@
 </head>
 <body>
     <main class="main">
-        <div class="geo-location">
+
+        <div class="modal geo-location">
             <div class="content">
                 <div class="location-icon"></div>
                 <p class="loader-text">Please allow geolocation service</p>
+                <a href="#" class="modal-btn ">OK <span class="modal-btn-counter">(5)</span></a>
             </div>
         </div>
         <div class="overlay-transition"></div>
-        <header id="header">
+
+        <section id="header">
             <form class="search">
                 <input type="text" id="large-view" class="search-location" placeholder="" autocomplete="off"/>
                 <button class="search-btn"><i class="fas fa-search"></i></button>
@@ -51,11 +54,11 @@
                             </span>
                         </div>
                     </div>
-                    <h3 class="description">Sunny</h3> 
-                    <p class="update-time">Updated as of ......... </p>
+                    <h3 class="description"></h3> 
+                    <p class="update-time"></p>
                 </div>
             </div>
-        </header>
+        </section>
 
         <section id="daily-forecast">
             <div class="container">

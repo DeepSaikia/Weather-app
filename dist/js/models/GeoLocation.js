@@ -29,6 +29,7 @@ export default class geoLocation {
                 body: JSON.stringify(config.getGeoLocationConfig())
             });
             let result = await response.json()
+            console.log(result)
             this.location = `${result.EnglishName}, ${result.AdministrativeArea.EnglishName}, ${result.Country.EnglishName}`
             this.locKey = result.Key    
 

@@ -27,7 +27,7 @@ export const renderLightOrDarkBackground = (isDay, backgroundNum) => {
         document.querySelector(DOMStrings.main).style.background = `linear-gradient(
                                                                 to right bottom,
                                                                 rgba(63, 140, 212, 0.7),
-                                                                rgba(50, 119, 209, 0.7))`;
+                                                                rgba(50, 119, 209, 0.9))`;
 
         document.querySelector(DOMStrings.bgTransition).style.background = `url('../pics/${backgroundNum}.jpg') no-repeat center center/cover`;
     }

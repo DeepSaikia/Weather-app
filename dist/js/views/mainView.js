@@ -1,7 +1,7 @@
 import { DOMStrings } from "../DOMStrings.js";
 
 export const currentMainTempRender = (temp) => {
-    document.querySelector(DOMStrings.currentMainTemp).innerHTML = `${temp}&#176;`;
+    document.querySelector(DOMStrings.currentMainTemp).innerHTML = `${temp}&#176;`;  //why semicolon
 }
 
 export const currentMainIconRender = (icon) => {
@@ -26,6 +26,7 @@ export const selectedLocationRender = (location) => {
 }
 
 export const unitTogglerRender = (isDay) => {
+    console.log(isDay)
     let unitCheckBox = document.querySelector(DOMStrings.unitSwitch);
     let unitLabel = document.querySelector(DOMStrings.unitLabel);
     if(isDay) {
@@ -40,4 +41,12 @@ export const unitTogglerRender = (isDay) => {
         unitCheckBox.classList.add('bg-dark')
         unitLabel.classList.add('bg-dark')
     }
+}
+
+export const renderMainOverlay = () => {
+    document.querySelector(DOMStrings.main).classList.add('overlay-active');
+}
+
+export const removeMainOverlay = () => {
+    document.querySelector(DOMStrings.main).classList.remove('overlay-active');
 }
