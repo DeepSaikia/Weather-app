@@ -24,7 +24,7 @@ export const renderLightOrDarkBackground = (isDay, backgroundNum) => {
     document.querySelector(DOMStrings.bgTransition).classList.add('active'); //seperate method
     if(isDay) {
         
-        document.querySelector(DOMStrings.main).style.background = `linear-gradient(
+        document.querySelector(DOMStrings.mainOverlay).style.background = `linear-gradient(
                                                                 to right bottom,
                                                                 rgba(63, 140, 212, 0.7),
                                                                 rgba(50, 119, 209, 0.9))`;
@@ -33,7 +33,7 @@ export const renderLightOrDarkBackground = (isDay, backgroundNum) => {
     }
     else {
        
-        document.querySelector(DOMStrings.main).style.background = `linear-gradient(
+        document.querySelector(DOMStrings.mainOverlay).style.background = `linear-gradient(
                     to right bottom,
                     rgba(12, 55, 95, 0.8),
                     rgba(7, 35, 71, 0.8))`;
@@ -41,16 +41,16 @@ export const renderLightOrDarkBackground = (isDay, backgroundNum) => {
     }
 }
 
-const renderAnimatedForecasts = () => {
+const renderAnimatedForecasts = (isDay) => {
     const section = document.querySelector(DOMStrings.hourlySection);
     const tempForecast = section.querySelector(DOMStrings.tempForecast);
-
+    // tempForecast.querySelector(DOMStrings.hrLine).style.backgroundColor = isDay ? '#3F88C5' : '#03A9F4'
     tempForecast.classList.add('active');
     let container = section.querySelector(DOMStrings.forecastContainer);
     container.classList.add('active');
 }
 
-export const hourlyForecastRender = (items) => {
+export const hourlyForecastRender = (items, isDay) => {
     let html = ''
     document.querySelector(DOMStrings.hourlyTemp).innerHTML = '';
     items.forEach((el, i) => {
@@ -65,7 +65,7 @@ export const hourlyForecastRender = (items) => {
             </div>`
     });
     document.querySelector(DOMStrings.hourlyTemp).innerHTML = html;
-    renderAnimatedForecasts();
+    renderAnimatedForecasts(isDay);
 }
 
 export const gethourlyItemClientWidth = () => {                                 //check name
@@ -73,3 +73,4 @@ export const gethourlyItemClientWidth = () => {                                 
     items = Array.from(items)
     return items[0].clientWidth;
 }
+

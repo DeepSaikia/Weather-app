@@ -43,10 +43,34 @@ export const unitTogglerRender = (isDay) => {
     }
 }
 
-export const renderMainOverlay = () => {
-    document.querySelector(DOMStrings.main).classList.add('overlay-active');
+export const renderRootOverlay = () => {
+    document.querySelector(DOMStrings.rootOverlay).classList.add('active');
 }
 
-export const removeMainOverlay = () => {
-    document.querySelector(DOMStrings.main).classList.remove('overlay-active');
+export const removeRootOverlay = () => {
+    document.querySelector(DOMStrings.rootOverlay).classList.remove('active');
+}
+
+export const opaqueRootOverlay = () => {
+    document.querySelector(DOMStrings.rootOverlay).style.opacity = 1;
+}
+
+export const removeOpaqueRootOverlay = () => {
+    document.querySelector(DOMStrings.rootOverlay).removeAttribute("style");
+}
+
+export const renderMainTransform = () => {
+    document.querySelector(DOMStrings.main).classList.toggle('active')
+}
+
+export const addTransformMain3D = () => {
+    document.querySelector(DOMStrings.main).classList.add('active');
+}
+
+export const removeTransformMain3D = () => {
+    document.querySelector(DOMStrings.main).classList.remove('active');
+}
+
+export const removePointerEventsNone = () => {
+    document.querySelector(DOMStrings.root).classList.remove('pointer-events-none');
 }

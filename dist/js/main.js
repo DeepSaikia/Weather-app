@@ -12,12 +12,13 @@ import * as geoLocationView from './views/geoLocationView.js';
 import * as scrollView from './views/scrollView.js';
 
 let state = {  
-    dailyForecasts : [], 
-    hourlyForecasts : [],
+    dailyForecasts : {}, 
+    hourlyForecasts : {},
     geoLocation: {},
     location : '',
     unitType : '', 
     isDay : true,
+    isModalOnScreen: true,
     searchTimerID : 0,
     currWeatherForBackground : 0,
     hourlyHorizontalScroll : {
@@ -27,6 +28,12 @@ let state = {
     dailyHorizontalScroll : {
         scrollCount : 0,
         itemClientWidth : 0
+    },
+    setLocation: function(location) {
+        this.location = location;
+    },
+    getLocation: function() {
+        return this.location;
     },
     getScrollCount : function(sectionID) {
         return this[`${sectionID}HorizontalScroll`].scrollCount;
@@ -51,35 +58,71 @@ let state = {
     },
     setSearchTimerID : function(ID) {
         this.searchTimerID = ID;
-    }
-}
-
-const geoLocationControl = async () => {
-    mainView.renderMainOverlay()
-    geoLocationView.renderGeoLocationModal();
-    state.geoLocation = new geoLocation()
-    try{
-        await state.geoLocation.getWeatherForecast();
-        mainView.selectedLocationRender(state.geoLocation.location)
-        fetchHourlyForecast(state.geoLocation.locKey)
-        // console.log(state.geoLocation.errorMsg)
-        if(state.geoLocation.errorMsg.message){
-            geoLocationView.renderErrorGeoLocation(state.geoLocation.errorMsg.message)
-            setTimeout(() => {
-                geoLocationView.shrinkGeoLocationModal();
-            }, 3000);
-            return mainView.removeMainOverlay()
-        }
-        geoLocationView.shrinkGeoLocationModal();
-        mainView.removeMainOverlay()
-    }
-    catch(err){
-        console.log(err)
+    },
+    getIsModalOnScreen: function() {
+        return this.isModalOnScreen;
+    },
+    setIsModalOnScreen: function(bool) {
+        this.isModalOnScreen = bool;
     }
 }
 
 /**
- * Input Controller 
+ * GeoLocation Ctrl 
+ */
+
+const geoLocationControl = async () => {
+
+    mainView.renderRootOverlay();
+    geoLocationView.renderGeoLocationModal();
+    state.geoLocation = new geoLocation();
+    try {
+        await state.geoLocation.getWeatherForecast();
+        if(state.geoLocation.errorMsg) {
+            throw new Error()
+        }
+        state.setLocation(state.geoLocation.location)
+        mainView.selectedLocationRender(state.getLocation());
+
+        fetchHourlyForecast(state.geoLocation.locKey);
+        geoLocationView.shrinkGeoLocationModal();
+        state.setIsModalOnScreen(false);
+        mainView.removeRootOverlay();
+        mainView.removeTransformMain3D();
+        searchView.addSearchZindex();
+    }
+    catch(err){
+        console.log(err)
+        // mainView.removeTransformMain3D();
+        geoLocationView.renderErrorGeoLocation(state.geoLocation.errorMsg.message);
+        geoLocationView.renderModalBtn();
+    }
+
+}
+
+const  onClickGeolocationBtn = (ev) => {
+
+    if(ev.target.className === 'modal-btn') {
+        state.setIsModalOnScreen(false);
+        mainView.removePointerEventsNone();
+        const windowWidth = window.innerWidth; 
+        geoLocationView.shrinkGeoLocationModal();
+        searchView.addSearchZindex();
+        if(windowWidth > 1200 ) {
+            mainView.opaqueRootOverlay();
+            searchView.expandInput();
+        }
+        else if(windowWidth <= 1200) {
+            searchView.showSideMenu()
+        }
+    }
+}
+
+document.querySelector(DOMStrings.geoLocation).addEventListener('click', onClickGeolocationBtn);
+
+
+/**
+ * Search Location Controller 
  */
 
 const autoComplete = async (ev) => {
@@ -107,13 +150,16 @@ const fetchSelectedLocationFromDOM = (e) => {
     console.log(li)
     if(li){                                     //better implmentation for in-between list click
         const key = li.id;
-        state.location = e.target.textContent;
+        state.setLocation(e.target.textContent);
         searchView.autoCompListClear();
         searchView.clearInputBox();
         searchView.shrinkInputBox();
         searchView.hideSideMenu();
         mainView.selectedLocationRender(state.location);  //Delegate to hourly Forecast
         fetchHourlyForecast(key);
+        mainView.removeOpaqueRootOverlay();
+        mainView.removeRootOverlay();
+        mainView.removeTransformMain3D();
     }
 }
 
@@ -135,7 +181,7 @@ document.querySelectorAll(DOMStrings.locationList).forEach(el => el.addEventList
  * Daily Forecast Controller 
  */
 
-const fetchDailyForecast = async(locKey) => {
+const fetchDailyForecast = async(locKey, isDay) => {
     
     if(locKey) {
         state.dailyForecasts = new DailyForecast(locKey);
@@ -144,7 +190,7 @@ const fetchDailyForecast = async(locKey) => {
             await state.dailyForecasts.getForecasts();
             
             dailyView.clearDailyLoader();
-            dailyView.dailyForecastsRender(state.dailyForecasts.result);
+            dailyView.dailyForecastsRender(state.dailyForecasts.result, isDay);
             state.dailyHorizontalScroll.itemClientWidth = dailyView.getDailyItemClientWidth()
             
         }
@@ -168,8 +214,8 @@ const fetchHourlyForecast = async(locKey) => {
         hourlyView.renderHourlyLoader();
         dailyView.renderDailyLoader();
         state.resetScrollCount();
-        scrollView.disableScrollbtn('daily', 'left')
-        scrollView.disableScrollbtn('hourly', 'left')
+        scrollView.disableScrollbtn('daily', 'left');
+        scrollView.disableScrollbtn('hourly', 'left');
 
                 
         try {
@@ -178,16 +224,14 @@ const fetchHourlyForecast = async(locKey) => {
             // state.unitType = result[0].Temperature.UnitType === 17 ? 'celsius' : 'fahrenheit';
             // console.log(state.isDay);
             hourlyView.renderLightOrDarkBackground(state.hourlyForecasts.isDay, state.hourlyForecasts.currWeatherForBackground);
-        
             mainView.currentMainTempRender(state.hourlyForecasts.currentTemp);
             mainView.currentMainIconRender(state.hourlyForecasts.currentIcon);
             mainView.mainWeatherDescriptionRender(state.hourlyForecasts.currDescription);
             mainView.mainRenderUpdateTime();
             scrollView.resetForecastScrollLeft();
-            fetchDailyForecast(locKey);
-            console.log('from hourly')
+            fetchDailyForecast(locKey, state.hourlyForecasts.isDay);
             hourlyView.clearHourlyLoader()
-            hourlyView.hourlyForecastRender(state.hourlyForecasts.result);
+            hourlyView.hourlyForecastRender(state.hourlyForecasts.result, state.hourlyForecasts.isDay);
             mainView.unitTogglerRender(state.hourlyForecasts.isDay)  
             state.hourlyHorizontalScroll.itemClientWidth = hourlyView.gethourlyItemClientWidth()
         }
@@ -259,13 +303,43 @@ document.querySelectorAll(DOMStrings.tempForecast).forEach(el => {
 
 /**
  * Window Resize Control
- */
+*/
 
 const resizeController = () => {
-    scrollView.scrollBtnOnResize(window.innerWidth);
-    state.resetScrollCount()
+
+    const windowWidth = window.innerWidth;
+    searchView.hideSideMenu();
     searchView.shrinkInputBox();
-    mainView.selectedLocationRender(state.location)  //is it required here?
+    state.resetScrollCount();
+    scrollView.scrollBtnOnResize(windowWidth);  
+
+    if(windowWidth > 1200) {
+        searchView.viewInputBox();
+        
+        //On regular search after geolocation
+        if(state.getLocation().length > 0) {
+            mainView.removeRootOverlay();
+            mainView.removeTransformMain3D();
+        }
+        //On initial search and geolocation
+        else if(!state.getIsModalOnScreen() && state.getLocation().length === 0) {
+            mainView.opaqueRootOverlay()
+            searchView.expandInput();
+        }
+
+        mainView.selectedLocationRender(state.location)  //is it required here?
+    }
+    else if(windowWidth <= 1200){
+        searchView.hideInputBox();
+
+       //On initial search and geolocation 
+       
+        if(!state.getIsModalOnScreen() && state.getLocation().length === 0) {
+            mainView.removeOpaqueRootOverlay()
+            searchView.showSideMenu()
+
+        }
+    }
 }
 
 window.addEventListener('resize', resizeController);
@@ -299,32 +373,96 @@ document.querySelectorAll(DOMStrings.forecastContainer).forEach(el => {
 })
 
 
+/**
+ * Search Box Controller
+*/
 
-const shrinkInputBoxOffFocus = (ev) => {
-    let parentInput = ev.target.closest('.expand');
-    if(!parentInput)
-        searchView.shrinkInputBox();
+//On body click Controller to display input box with alert on initial state OR hide input box on regular state 
+
+const onBodyClickShowOrHideSearchInput = (ev) => {
+
+    const parentInput = ev.target.closest('.expand');
+    let isTargetSideMenu = ev.target.closest(DOMStrings.sideMenu);
+    let isTargetSearchBtn = ev.target.closest(DOMStrings.form);
+    const geolocation = ev.target.closest(DOMStrings.geoLocation);
+    let windowWidth = window.innerWidth;
+
+    if(!parentInput && (windowWidth > 1200)) {
+
+        //Expand/Show input box after alert on initial state when geolocation modal is off screen and state.location.length < 0 and when clicked outside geolocation modal and parent of search input
+
+        if(!geolocation && !state.getLocation().length > 0 && !state.getIsModalOnScreen()) {
+            alert('Type and select a location to continue..')
+            searchView.expandInput();
+        }
+
+        //Shrink/Hide input box on regular state on body click after fetching geolocation 
+        else if(state.getLocation().length > 0)
+            searchView.shrinkInputBox();
+            
+    }
+
+    else if(!(isTargetSearchBtn || isTargetSideMenu) && (windowWidth <= 1200)) {
+
+        //Show side menu with alert on initial state when geolocation modal is off screen 
+
+        if(!geolocation && !state.getLocation().length > 0 && !state.getIsModalOnScreen()) {
+            alert('Type and select a location to continue..')
+            return searchView.showSideMenu()
+        }
+
+        //Hide side menu on regular state after fetching geolocation when state.location.length is always greater than 0
+
+        else if(state.getLocation().length > 0) {
+            mainView.removeRootOverlay();
+            mainView.removeTransformMain3D()
+            searchView.hideSideMenu()
+        }
+    }
 }
 
+const onClickDisplaySearch = (ev) => {
+    ev.preventDefault();
+    let windowWidth = window.innerWidth;
+
+    //Show side search when windowidth <= 1200 on regular state after fetching geolocation
+
+    if(windowWidth <= 1200) {
+        mainView.renderMainTransform();
+        mainView.renderRootOverlay();
+        searchView.showSideMenu(windowWidth);
+    }
+
+    //Expand input & hide side search when windowidth > 1200 on regular state after fetching geolocation
+
+    else {
+        searchView.hideSideMenu()
+        searchView.expandInput();
+    }
+}
+
+/**
+ * App Initializer
+ */
+
 const init = () => {
+    mainView.renderMainTransform()   
 
     geoLocationControl()
 
     //Input box expand on click listener
 
-    document.querySelector(DOMStrings.form).addEventListener('click', (ev) => {
-        ev.preventDefault();
-        searchView.expandInput();
-    })
+    document.querySelector(DOMStrings.form).addEventListener('click', onClickDisplaySearch)
 
     scrollView.scrollBtnOnResize(window.innerWidth);
 
     //Hide side/search list on body click listener 
 
-    document.addEventListener('click', (ev) => {
-        searchView.autoCompListClear();
-        searchView.hideSideMenuOnBodyClick(ev);
-    });
+    // document.addEventListener('click', (ev) => {
+    //     console.log('from 1')
+    //     searchView.autoCompListClear();
+    //     searchView.hideSideMenuOnBodyClick(ev);
+    // });
 
     document.querySelector(DOMStrings.bgTransition).classList.add('active');
     
@@ -333,7 +471,7 @@ const init = () => {
     document.querySelector(DOMStrings.unitSwitch).addEventListener('change', tempConvert);
 
 
-    document.addEventListener('click', shrinkInputBoxOffFocus);
+    document.addEventListener('click', onBodyClickShowOrHideSearchInput);
    
 }
 

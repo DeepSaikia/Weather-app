@@ -1,3 +1,12 @@
+/**
+Perspective
+transform-style
+translate3d
+cubic-bezier
+Search box
+Unit toggler
+*/
+
 *,
 *::before,
 *::after {
@@ -34,21 +43,48 @@ h1, h2, h3, h4 {
     color: #fff;
 }
 
+#root {
+    height: 100%;
+    width: 100%;
+    perspective: 100rem;
+    position: relative;
+}
+
+#root.pointer-events-none > * {
+    pointer-events: none;
+}
+
 .main {
     position: relative;
     height: 100%;
-    background: rgba(3,169,244, 0.7);
     padding: 10px 0;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+
     /*linear-gradient(
         to right bottom,
         rgba(63, 140, 212, 0.7),
         rgba(50, 119, 209, 0.7));*/
 }
 
-.main > * {   
+.main .main-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(3,169,244, 0.7);
+    /* z-index: 10; */
+}
+
+.main.active {
+    transform: translate3d(0, 0, -25rem);
+}
+
+/* .main > * {   
     position: relative;
     z-index : 10;
-}
+} */
 
 
 .main .overlay-transition {    /*misleading classname either fix name or functionality*/     
@@ -72,7 +108,7 @@ h1, h2, h3, h4 {
 /** Modal
 */
 
-.main .geo-location {
+#root .geo-location {
     position: fixed;
     padding: 30px 20px;
     top: 50%;
@@ -80,29 +116,31 @@ h1, h2, h3, h4 {
     width: 500px;
     max-width: 80%;
     transform: translate(-50%, -50%) scale(0);
-    transition: all 4s ease-in-out;
-    background: rgb(2, 141, 204);
+    transition: transform 1s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+    background: rgb(3, 169, 244);                          /*rgb(2, 141, 204);*/
+    box-shadow: 0 15px 25px rgba(0,0,0,0.4);
     border-radius: 10px;
-    z-index: 100;   
+    pointer-events: auto;
+    z-index: 999;   
     text-align: center;
 }
 
-.main .geo-location .content {
+#root .geo-location .content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.main .geo-location.active {
+#root .geo-location.active {
     transform: translate(-50%, -50%) scale(1);
 }
 
-.main .geo-location .location-icon {
+#root .geo-location .location-icon {
     text-align: center;
 }
 
-.main .geo-location .loader {
+#root .geo-location .loader {
 	margin: 20px auto;
 	width: 40px;
 	height: 40px;
@@ -117,19 +155,19 @@ h1, h2, h3, h4 {
 	}
 }
 
-.main .geo-location .error-icon {
+#root .geo-location .error-icon {
     width: 80px;
     text-align: center;
     margin: 10px 0;
 }
 
-.main .geo-location .loader-text {
+#root .geo-location .loader-text {
     padding: 15px 10px;
     font-size: 1.2rem;
     margin: 10px 0;
 }
 
-.main .geo-location .modal-btn {
+#root .geo-location .modal-btn {
     display: inline-block;
     margin: 10px;
     padding: 10px 20px;
@@ -139,35 +177,48 @@ h1, h2, h3, h4 {
     border-radius: 5px;
 }
 
-.main::before {
-    content: '';
-    position: fixed;
+#root .root-overlay {
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(1, 70, 104, 0.8);
+    width: 100%;
+    height: 100%;
+    background: rgb(0, 0, 0);
     z-index: 50;
-    pointer-events: none;
-    transform: scale(0);
+    transform: translate(-100%, -100%);
     opacity: 0;
-    transition: transform 2s ease-in-out,
-                opacity 2s ease-in-out;
+    transition: opacity 0.6s, transform 0.2s 0.6s;
+    /* transition: transform 2s ease-in-out,
+                opacity 2s ease-in-out; */
 }
 
-.main.overlay-active::before {
-    transform: scale(1);
-    opacity: 1;
+#root .root-overlay.active {
+    transform: translate(0, 0);
+    opacity: 0.9;
+    transition: opacity 0.6s;
 }
 
 #header {
     position: relative;
 }
 
-#header .search {
-    position: absolute;
-    top: 20px;
+.location-search .search>* {
+    cursor: pointer; 
+}
+
+.location-search {
+    position: fixed;
+    top: 30px;
     right: 60px;
+    z-index: -1;
+}
+
+.location-search .search {
+    /* position: absolute; */
+    /* top: 20px;
+    right: 60px; */
     display: grid;
     cursor: pointer;
     grid-template-columns: 1fr auto;
@@ -178,9 +229,6 @@ h1, h2, h3, h4 {
     -6px -6px 16px inset #ffffff20;
 }
 
-#header .search>* {
-    cursor: pointer; 
-}
 
 .search input {
     width: 0px;
@@ -190,6 +238,9 @@ h1, h2, h3, h4 {
     color: white;
     background-color: transparent;
     transition: width 0.5s ease-in-out;
+}
+.search input.hide-input {
+    display: none;
 }
 
 .search input::placeholder {
@@ -219,13 +270,13 @@ h1, h2, h3, h4 {
     scrollbar-color: #03A9F4 #014668;
 }
 
-#header .location-list {
+.location-search .location-list {
     display: none;
 }
 
-#header .location-list.active {
+.location-search .location-list.active {
     display: block;
-    position: absolute;
+    /* position: absolute; */
     color: #fff;
     width: 365px;
     height: 240px;
@@ -238,7 +289,7 @@ h1, h2, h3, h4 {
     z-index: 1;
 }
 
-#header .location-list li {
+.location-search .location-list li {
     position: relative;
     list-style: none;
     color: #fff;
@@ -247,7 +298,7 @@ h1, h2, h3, h4 {
     cursor: pointer;
 }
 
-#header .location-list li::before {
+.location-search .location-list li::before {
     content: '';
     position: absolute;
     top: 0;
@@ -260,13 +311,13 @@ h1, h2, h3, h4 {
     transition: background-color 0.5s ease-in-out, width 0.5s ease-in-out;
 }
 
-#header .location-list li:hover::before {
+.location-search .location-list li:hover::before {
     border-radius: 50px;
     width: 100%;
     background-color: #03A9F4;
 }
 
-#header .location-list li p {
+.location-search .location-list li p {
     padding: 0 10px;
     position: relative;
     z-index: 10;
@@ -284,7 +335,7 @@ h1, h2, h3, h4 {
     width: 0;
     height: 100%;
     background: rgba(1,71,104, 1);
-    z-index: 20;
+    z-index: 999;
     padding: 30px 0px;
     transition: width 0.5s ease-in-out,
     opacity 0.5s ease-in-out;
@@ -531,12 +582,13 @@ h1, h2, h3, h4 {
 
 #daily-forecast > *,
 #hourly-forecast > *{
-    /* position: relative; */
+    position: relative;
     z-index: 10;
 }
 
 .forecast-title {
     margin: 10px 60px;
+    z-index: 20;
 }
 
 #daily-forecast .forecast-card .weather-icon i,
@@ -563,7 +615,8 @@ h1, h2, h3, h4 {
     top: 0;
     left: 50%;
     width: 0%;
-    border: 1px solid #979494;
+    height: 1px;
+    border: none;
     opacity: 0;
     transition: opacity 1s ease-in-out,
                 left 1s ease-in-out,
@@ -573,6 +626,7 @@ h1, h2, h3, h4 {
 #daily-forecast .temp-forecasts.active::before,
 #hourly-forecast .temp-forecasts.active::before {
     width: 100%;
+    background-color: #fff;
     left: 0%;
     opacity: 1;
 }

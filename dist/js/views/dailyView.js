@@ -1,18 +1,19 @@
 import { DOMStrings } from "../DOMStrings.js";
 import { renderLoader, clearLoader } from "./loaderView.js";
 
-const renderAnimatedForecasts = () => {
+const renderAnimatedForecasts = (isDay) => {
     const section = document.querySelector(DOMStrings.dailySection);
     const tempForecast = section.querySelector(DOMStrings.tempForecast);
-
+    // tempForecast.querySelector(DOMStrings.hrLine).style.backgroundColor = isDay ? '#014668' : '#03A9F4';
     tempForecast.classList.add('active');
     let container = section.querySelector(DOMStrings.forecastContainer);
     container.classList.add('active');
 }
 
-export const dailyForecastsRender = (items) => {
+export const dailyForecastsRender = (items, isDay) => {
     let html = '';
     document.querySelector(DOMStrings.dailyTemp).innerHTML = '';
+    
     items.forEach((el, i) => {
     html +=  `<div class="daily-forecast forecast-card ${i===0?'forecast-card-today':''}">
                 <p class="date">${el.date}</p>
@@ -27,7 +28,7 @@ export const dailyForecastsRender = (items) => {
             </div>`
     });
     document.querySelector(DOMStrings.dailyTemp).innerHTML = html;
-    renderAnimatedForecasts();
+    renderAnimatedForecasts(isDay);
 }
 
 export const getDailyItemClientWidth = () => {

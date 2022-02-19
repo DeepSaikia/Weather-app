@@ -18,3 +18,8 @@ export const renderErrorGeoLocation = (errMsg) => {
     geoLocation.querySelector(DOMStrings.geoLocationIcon).innerHTML = errIcon;
     geoLocation.querySelector(DOMStrings.loaderText).innerHTML = errMsg;
 }
+
+export const renderModalBtn = () => {
+    const htmlText = `<a href="#" class="modal-btn">Search locations</a>`
+    document.querySelector(DOMStrings.geoLocation).insertAdjacentHTML('beforeend', htmlText);
+}

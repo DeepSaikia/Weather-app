@@ -36,31 +36,19 @@ export const clearInputBox = () => {
 }
 
 export const expandInput = () => {
-    let windowWidth = window.innerWidth;
-    if(windowWidth <= 1200)
-        displaySideMenu(windowWidth);
-    else {
-        displaySideMenu(windowWidth)
-        document.querySelector(DOMStrings.form).classList.add('expand');
-        document.querySelector(DOMStrings.input).focus();
-        clearInputBox();
-    }
+    document.querySelector(DOMStrings.form).classList.add('expand');
+    document.querySelector(DOMStrings.input).focus();
+    clearInputBox();
 }
 
 /**
  * Side Menu Functions
  */
 
-export const displaySideMenu = (windowWidth) => {
+export const showSideMenu = () => {
     let sideMenu = document.querySelector(DOMStrings.sideMenu);
-    if(windowWidth <= 1200) {
-        sideMenu.classList.add('active');
-        // sideMenu.style.display = 'block';
-    }
-    else {
-        hideSideMenu();
-        // sideMenu.style.display = 'none';
-    }
+    sideMenu.classList.add('active');
+    document.querySelector(DOMStrings.mobileViewInput).focus();
 }
 
 export const hideSideMenu = () => {
@@ -70,10 +58,14 @@ export const hideSideMenu = () => {
     sideMenu.classList.remove('active');
 }
 
-export const hideSideMenuOnBodyClick = (ev) => {
-    let isTargetSideMenu = ev.target.closest(DOMStrings.sideMenu) === null;
-    let isTargetSearchBtn = ev.target.closest(DOMStrings.form) === null;
-    if(isTargetSearchBtn && isTargetSideMenu) {
-        hideSideMenu()
-    }
+export const addSearchZindex = () => {
+    document.querySelector(DOMStrings.locationSearch).style.zIndex = '999';
+}
+
+export const hideInputBox = () => {
+    document.querySelector(DOMStrings.input).classList.add('hide-input')
+}
+
+export const viewInputBox = () => {
+    document.querySelector(DOMStrings.input).classList.remove('hide-input')
 }

@@ -113,5 +113,6 @@ export const scrollBtnOnResize = (windowWidth) => {
     resetScrollBtns();
     disableScrollbtn('hourly', 'left')
     disableScrollbtn('daily', 'left')
+    
 }
 
